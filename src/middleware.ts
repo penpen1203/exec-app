@@ -13,7 +13,7 @@ export default auth((req) => {
     return null;
   }
 
-  if (!isAuth && !req.nextUrl.pathname.startsWith('/')) {
+  if (!isAuth && req.nextUrl.pathname !== '/') {
     return NextResponse.redirect(new URL('/auth/signin', req.url));
   }
 });
