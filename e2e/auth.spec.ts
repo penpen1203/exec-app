@@ -19,7 +19,7 @@ test.describe('Authentication', () => {
     await page.click('text=今すぐ始める');
     
     // Should be on sign in page
-    await expect(page).toHaveURL('/auth/signin');
+    await expect(page).toHaveURL('/auth/signin/');
     await expect(page.locator('text=Googleでサインイン')).toBeVisible();
   });
 
@@ -28,6 +28,6 @@ test.describe('Authentication', () => {
     await page.goto('/dashboard');
     
     // Should be redirected to sign in page
-    await expect(page).toHaveURL('/auth/signin');
+    await expect(page).toHaveURL('/auth/signin/');
   });
 });
