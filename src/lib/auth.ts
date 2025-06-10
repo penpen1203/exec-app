@@ -6,12 +6,12 @@ import type { NextAuthConfig } from 'next-auth';
 const googleClientId = process.env.GOOGLE_CLIENT_ID || 'dummy-client-id';
 const googleClientSecret = process.env.GOOGLE_CLIENT_SECRET || 'dummy-client-secret';
 
-// Only validate in production or when we have real secrets
-if (process.env.NODE_ENV === 'production' && googleClientId === 'dummy-client-id') {
+// Only validate when we're not in CI/build mode and have real secrets needed
+if (process.env.NODE_ENV === 'production' && !process.env.CI && googleClientId === 'dummy-client-id') {
   throw new Error('GOOGLE_CLIENT_ID is required in production environment');
 }
 
-if (process.env.NODE_ENV === 'production' && googleClientSecret === 'dummy-client-secret') {
+if (process.env.NODE_ENV === 'production' && !process.env.CI && googleClientSecret === 'dummy-client-secret') {
   throw new Error('GOOGLE_CLIENT_SECRET is required in production environment');
 }
 
