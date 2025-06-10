@@ -2,16 +2,17 @@ import NextAuth from 'next-auth';
 import Google from 'next-auth/providers/google';
 import type { NextAuthConfig } from 'next-auth';
 
-// Validate required environment variables
-const googleClientId = process.env.GOOGLE_CLIENT_ID;
-const googleClientSecret = process.env.GOOGLE_CLIENT_SECRET;
+// Validate required environment variables (skip in CI without secrets)
+const googleClientId = process.env.GOOGLE_CLIENT_ID || 'dummy-client-id';
+const googleClientSecret = process.env.GOOGLE_CLIENT_SECRET || 'dummy-client-secret';
 
-if (!googleClientId) {
-  throw new Error('GOOGLE_CLIENT_ID is not defined in environment variables');
+// Only validate in production or when we have real secrets
+if (process.env.NODE_ENV === 'production' && googleClientId === 'dummy-client-id') {
+  throw new Error('GOOGLE_CLIENT_ID is required in production environment');
 }
 
-if (!googleClientSecret) {
-  throw new Error('GOOGLE_CLIENT_SECRET is not defined in environment variables');
+if (process.env.NODE_ENV === 'production' && googleClientSecret === 'dummy-client-secret') {
+  throw new Error('GOOGLE_CLIENT_SECRET is required in production environment');
 }
 
 export const authConfig: NextAuthConfig = {
