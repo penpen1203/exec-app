@@ -77,6 +77,7 @@ export function SimpleGoalForm() {
             placeholder="例: 英語のTOEIC800点を取得する"
             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             disabled={isSubmitting}
+            maxLength={100}
             required
           />
         </div>
@@ -93,6 +94,7 @@ export function SimpleGoalForm() {
             rows={3}
             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
             disabled={isSubmitting}
+            maxLength={500}
           />
         </div>
 

@@ -28,8 +28,8 @@ export class AIAdapter {
         };
       }
 
-      // トークン制限チェック（概算）
-      const estimatedTokens = Math.ceil(request.prompt.length / 4) + (request.maxTokens || 500);
+      // トークン制限チェック（改良された概算）
+      const estimatedTokens = this.estimateTokens(request.prompt) + (request.maxTokens || 500);
       if (!tokenUsageTracker.checkTokenLimit(request.userId, request.model, estimatedTokens)) {
         return {
           error: '月次トークン制限に達しました',
@@ -241,6 +241,22 @@ JSONのみを出力してください。`;
         }
       };
     }
+  }
+
+  // トークン数推定（改良された手法）
+  private estimateTokens(text: string): number {
+    // より正確なトークン推定：単語ベース + 文字数ベースの組み合わせ
+    const words = text.split(/\s+/).filter(word => word.length > 0);
+    const avgCharsPerToken = 3.5; // OpenAI GPTモデルの平均
+    const wordCount = words.length;
+    const charCount = text.length;
+    
+    // 単語数ベースと文字数ベースの推定を組み合わせ
+    const wordBasedEstimate = wordCount * 1.3; // 英語では1単語≈1.3トークン
+    const charBasedEstimate = charCount / avgCharsPerToken;
+    
+    // より保守的な推定値を返す（高い方を選択）
+    return Math.ceil(Math.max(wordBasedEstimate, charBasedEstimate));
   }
 
   // 統計情報取得

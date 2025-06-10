@@ -15,7 +15,7 @@ export function generateCacheKey(prompt: string, model: string, temperature: num
   return createHash('sha256').update(input).digest('hex');
 }
 
-// メモリキャッシュ（開発環境用）
+// メモリキャッシュ（開発環境用）- LRU実装
 class MemoryCache {
   private cache = new Map<string, CacheEntry>();
 
@@ -28,6 +28,10 @@ class MemoryCache {
       this.cache.delete(key);
       return null;
     }
+
+    // LRU: アクセスされたエントリを最新にする
+    this.cache.delete(key);
+    this.cache.set(key, entry);
 
     return entry;
   }
@@ -43,11 +47,16 @@ class MemoryCache {
       expiresAt,
     };
 
-    // キャッシュサイズ制限
+    // 既存のエントリがある場合は削除（LRUのため）
+    if (this.cache.has(key)) {
+      this.cache.delete(key);
+    }
+
+    // LRU: キャッシュサイズ制限 - 最も古いエントリを削除
     if (this.cache.size >= CACHE_CONFIG.MAX_CACHE_SIZE) {
-      const firstKey = this.cache.keys().next().value;
-      if (firstKey) {
-        this.cache.delete(firstKey);
+      const oldestKey = this.cache.keys().next().value;
+      if (oldestKey) {
+        this.cache.delete(oldestKey);
       }
     }
 
