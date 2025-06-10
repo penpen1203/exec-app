@@ -1,38 +1,42 @@
-# Cloudflare Workers配置ファイル
+# Cloudflare Workers & Pages設定ファイル
 name = "exec-os"
 compatibility_date = "2024-12-01"
 compatibility_flags = ["nodejs_compat"]
-
-# 本番環境設定
-[env.production]
-name = "exec-os-production"
-routes = [
-  { pattern = "exec-os.pages.dev/*", zone_name = "exec-os.pages.dev" }
-]
-
-# ステージング環境設定
-[env.staging]
-name = "exec-os-staging"
-routes = [
-  { pattern = "staging.exec-os.pages.dev/*", zone_name = "staging.exec-os.pages.dev" }
-]
 
 # D1データベース設定
 [[d1_databases]]
 binding = "DB"
 database_name = "exec-os-db"
-database_id = "your-database-id-here"
+database_id = ""
 
 # KVネームスペース設定（キャッシュ用）
 [[kv_namespaces]]
 binding = "CACHE"
-id = "your-kv-id-here"
-preview_id = "your-preview-kv-id-here"
+id = ""
+preview_id = ""
 
 # 環境変数
 [vars]
 NODE_ENV = "production"
 NEXT_TELEMETRY_DISABLED = "1"
+
+# 本番環境設定
+[env.production]
+name = "exec-os-production"
+[env.production.vars]
+NODE_ENV = "production"
+
+# ステージング環境設定
+[env.staging]
+name = "exec-os-staging"
+[env.staging.vars]
+NODE_ENV = "staging"
+
+# 開発環境設定
+[env.development]
+name = "exec-os-development"
+[env.development.vars]
+NODE_ENV = "development"
 
 # シークレット（wrangler secret putで設定）
 # NEXTAUTH_SECRET
