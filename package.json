@@ -6,7 +6,13 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "type-check": "tsc --noEmit",
+    "test": "echo \"No unit tests configured yet\"",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "deploy": "next build && wrangler pages deploy out",
+    "deploy:preview": "next build && wrangler pages deploy out --env preview"
   },
   "dependencies": {
     "react": "^19.0.0",

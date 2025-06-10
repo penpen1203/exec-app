@@ -1,0 +1,43 @@
+# Cloudflare Workers配置ファイル
+name = "exec-os"
+compatibility_date = "2024-12-01"
+compatibility_flags = ["nodejs_compat"]
+
+# 本番環境設定
+[env.production]
+name = "exec-os-production"
+routes = [
+  { pattern = "exec-os.pages.dev/*", zone_name = "exec-os.pages.dev" }
+]
+
+# ステージング環境設定
+[env.staging]
+name = "exec-os-staging"
+routes = [
+  { pattern = "staging.exec-os.pages.dev/*", zone_name = "staging.exec-os.pages.dev" }
+]
+
+# D1データベース設定
+[[d1_databases]]
+binding = "DB"
+database_name = "exec-os-db"
+database_id = "your-database-id-here"
+
+# KVネームスペース設定（キャッシュ用）
+[[kv_namespaces]]
+binding = "CACHE"
+id = "your-kv-id-here"
+preview_id = "your-preview-kv-id-here"
+
+# 環境変数
+[vars]
+NODE_ENV = "production"
+NEXT_TELEMETRY_DISABLED = "1"
+
+# シークレット（wrangler secret putで設定）
+# NEXTAUTH_SECRET
+# GOOGLE_CLIENT_ID
+# GOOGLE_CLIENT_SECRET
+# MICROSOFT_CLIENT_ID
+# MICROSOFT_CLIENT_SECRET
+# OPENAI_API_KEY
