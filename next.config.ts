@@ -1,8 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // Cloudflare Pages用の設定
-  output: 'export',
+  // Cloudflare Pages用の設定（認証APIルート使用時はstandaloneモード）
+  // output: 'export', // NextAuth.jsとは互換性なし
   trailingSlash: true,
   images: {
     unoptimized: true
