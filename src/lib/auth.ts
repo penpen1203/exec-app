@@ -1,7 +1,5 @@
 import NextAuth from 'next-auth';
 import Google from 'next-auth/providers/google';
-import { DrizzleAdapter } from '@auth/drizzle-adapter';
-import { getDb } from '@/lib/db';
 import type { NextAuthConfig } from 'next-auth';
 
 // Validate required environment variables
