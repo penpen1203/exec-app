@@ -1,27 +1,47 @@
-name = "exec-os-api"
-main = "src/api/index.ts"
-compatibility_date = "2024-06-09"
+# Cloudflare Workers & Pages設定ファイル
+name = "exec-os"
+compatibility_date = "2024-12-01"
+compatibility_flags = ["nodejs_compat"]
 
-# D1 Databases
+# D1データベース設定
 [[d1_databases]]
 binding = "DB"
 database_name = "exec-os-db"
 database_id = ""
 
-# KV Namespaces for caching
+# KVネームスペース設定（キャッシュ用）
 [[kv_namespaces]]
 binding = "CACHE"
 id = ""
+preview_id = ""
 
-# Environment variables
+# 環境変数
 [vars]
+NODE_ENV = "production"
+NEXT_TELEMETRY_DISABLED = "1"
+
+# 本番環境設定
+[env.production]
+name = "exec-os-production"
+[env.production.vars]
+NODE_ENV = "production"
+
+# ステージング環境設定
+[env.staging]
+name = "exec-os-staging"
+[env.staging.vars]
+NODE_ENV = "staging"
+
+# 開発環境設定
+[env.development]
+name = "exec-os-development"
+[env.development.vars]
 NODE_ENV = "development"
 
-# Build configuration
-[build]
-command = "pnpm build:api"
-
-# Routes
-[[routes]]
-pattern = "/api/*"
-zone_name = ""
+# シークレット（wrangler secret putで設定）
+# NEXTAUTH_SECRET
+# GOOGLE_CLIENT_ID
+# GOOGLE_CLIENT_SECRET
+# MICROSOFT_CLIENT_ID
+# MICROSOFT_CLIENT_SECRET
+# OPENAI_API_KEY
