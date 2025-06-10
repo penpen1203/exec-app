@@ -1,4 +1,4 @@
-import { sqliteTable, text, integer, real } from 'drizzle-orm/sqlite-core';
+import { sqliteTable, text, integer, real, check } from 'drizzle-orm/sqlite-core';
 import { sql } from 'drizzle-orm';
 import { users } from './users';
 
@@ -15,7 +15,9 @@ export const goals = sqliteTable('goals', {
   canonicalActions: text('canonical_actions', { mode: 'json' }), // JSON array of canonical actions
   createdAt: integer('created_at', { mode: 'timestamp' }).default(sql`(unixepoch())`),
   updatedAt: integer('updated_at', { mode: 'timestamp' }).default(sql`(unixepoch())`)
-});
+}, (table) => ({
+  progressCheck: check('progress_range', sql`${table.progress} >= 0 AND ${table.progress} <= 100`)
+}));
 
 export const keyResults = sqliteTable('key_results', {
   id: text('id').primaryKey(),

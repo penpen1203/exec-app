@@ -3,13 +3,16 @@ import { sql } from 'drizzle-orm';
 import { users } from './users';
 import { goals } from './goals';
 
+export const habitFrequencyEnum = ['daily', 'weekly', 'monthly'] as const;
+export type HabitFrequency = typeof habitFrequencyEnum[number];
+
 export const habits = sqliteTable('habits', {
   id: text('id').primaryKey(),
   userId: text('user_id').notNull().references(() => users.id, { onDelete: 'cascade' }),
   goalId: text('goal_id').references(() => goals.id, { onDelete: 'set null' }),
   title: text('title').notNull(),
   description: text('description'),
-  frequency: text('frequency').notNull(), // daily, weekly, monthly
+  frequency: text('frequency', { enum: habitFrequencyEnum }).notNull(),
   targetCount: integer('target_count').default(1), // times per frequency
   time: text('time'), // preferred time (HH:MM)
   reminderEnabled: integer('reminder_enabled', { mode: 'boolean' }).default(false),
@@ -29,7 +32,7 @@ export const habitLogs = sqliteTable('habit_logs', {
 
 export const habitStreaks = sqliteTable('habit_streaks', {
   id: text('id').primaryKey(),
-  habitId: text('habit_id').notNull().references(() => habits.id, { onDelete: 'cascade' }),
+  habitId: text('habit_id').notNull().references(() => habits.id, { onDelete: 'cascade' }).unique(),
   currentStreak: integer('current_streak').default(0),
   longestStreak: integer('longest_streak').default(0),
   lastCompletedDate: integer('last_completed_date', { mode: 'timestamp' }),

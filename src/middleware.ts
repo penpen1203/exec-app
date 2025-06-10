@@ -1,6 +1,5 @@
 import { auth } from '@/lib/auth';
 import { NextResponse } from 'next/server';
-import type { NextRequest } from 'next/server';
 
 export default auth((req) => {
   const isAuth = !!req.auth;
@@ -10,12 +9,14 @@ export default auth((req) => {
     if (isAuth) {
       return NextResponse.redirect(new URL('/dashboard', req.url));
     }
-    return null;
+    return NextResponse.next();
   }
 
   if (!isAuth && req.nextUrl.pathname !== '/') {
     return NextResponse.redirect(new URL('/auth/signin', req.url));
   }
+  
+  return NextResponse.next();
 });
 
 export const config = {

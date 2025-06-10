@@ -1,4 +1,4 @@
-import { sqliteTable, text, integer } from 'drizzle-orm/sqlite-core';
+import { sqliteTable, text, integer, uniqueIndex } from 'drizzle-orm/sqlite-core';
 import { sql } from 'drizzle-orm';
 
 export const users = sqliteTable('users', {
@@ -28,11 +28,13 @@ export const accounts = sqliteTable('accounts', {
   type: text('type').notNull(),
   provider: text('provider').notNull(),
   providerAccountId: text('provider_account_id').notNull(),
-  refresh_token: text('refresh_token'),
-  access_token: text('access_token'),
+  refreshToken: text('refresh_token'),
+  accessToken: text('access_token'),
   expires_at: integer('expires_at'),
   token_type: text('token_type'),
   scope: text('scope'),
   id_token: text('id_token'),
   session_state: text('session_state')
-});
+}, (table) => ({
+  providerAccountIdx: uniqueIndex('provider_account_idx').on(table.provider, table.providerAccountId)
+}));

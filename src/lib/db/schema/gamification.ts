@@ -1,4 +1,4 @@
-import { sqliteTable, text, integer, real } from 'drizzle-orm/sqlite-core';
+import { sqliteTable, text, integer, real, unique } from 'drizzle-orm/sqlite-core';
 import { sql } from 'drizzle-orm';
 import { users } from './users';
 
@@ -32,4 +32,6 @@ export const userBadges = sqliteTable('user_badges', {
   userId: text('user_id').notNull().references(() => users.id, { onDelete: 'cascade' }),
   badgeId: text('badge_id').notNull().references(() => badges.id, { onDelete: 'cascade' }),
   earnedAt: integer('earned_at', { mode: 'timestamp' }).default(sql`(unixepoch())`)
-});
+}, (table) => ({
+  uniqueUserBadge: unique().on(table.userId, table.badgeId)
+}));

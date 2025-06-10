@@ -4,11 +4,23 @@ import { DrizzleAdapter } from '@auth/drizzle-adapter';
 import { getDb } from '@/lib/db';
 import type { NextAuthConfig } from 'next-auth';
 
+// Validate required environment variables
+const googleClientId = process.env.GOOGLE_CLIENT_ID;
+const googleClientSecret = process.env.GOOGLE_CLIENT_SECRET;
+
+if (!googleClientId) {
+  throw new Error('GOOGLE_CLIENT_ID is not defined in environment variables');
+}
+
+if (!googleClientSecret) {
+  throw new Error('GOOGLE_CLIENT_SECRET is not defined in environment variables');
+}
+
 export const authConfig: NextAuthConfig = {
   providers: [
     Google({
-      clientId: process.env.GOOGLE_CLIENT_ID!,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+      clientId: googleClientId,
+      clientSecret: googleClientSecret,
     }),
   ],
   callbacks: {
