@@ -11,6 +11,13 @@ export class AIAdapter {
     const startTime = Date.now();
 
     try {
+      // API キーの検証
+      if (!process.env.OPENAI_API_KEY || process.env.OPENAI_API_KEY === 'dummy-key-for-build') {
+        return {
+          error: 'OpenAI API key is not configured',
+          code: 'API_ERROR',
+        };
+      }
       // レート制限チェック
       const rateCheck = rateLimiter.checkRateLimit(request.userId);
       if (!rateCheck.allowed) {
@@ -194,6 +201,13 @@ JSONのみを出力してください。`;
   // 健康チェック
   async healthCheck(): Promise<{ status: 'ok' | 'error'; details: unknown }> {
     try {
+      // API キーの検証
+      if (!process.env.OPENAI_API_KEY || process.env.OPENAI_API_KEY === 'dummy-key-for-build') {
+        return {
+          status: 'error',
+          details: { error: 'OpenAI API key is not configured' },
+        };
+      }
       // 簡単なテストリクエスト
       const testRequest: AIRequest = {
         prompt: 'Hello',

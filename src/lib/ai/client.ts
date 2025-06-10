@@ -1,14 +1,14 @@
 import OpenAI from 'openai';
 import { createOpenAI } from '@ai-sdk/openai';
 
-// OpenAI クライアント設定
+// OpenAI クライアント設定（遅延初期化）
 export const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
+  apiKey: process.env.OPENAI_API_KEY || 'dummy-key-for-build',
 });
 
-// AI SDK クライアント設定
+// AI SDK クライアント設定（遅延初期化）
 export const aiOpenAI = createOpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
+  apiKey: process.env.OPENAI_API_KEY || 'dummy-key-for-build',
 });
 
 // 使用可能なモデル定義
