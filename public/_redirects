@@ -1,0 +1,13 @@
+# Cloudflare Pages リダイレクト設定
+
+# SPA用フォールバック
+/*    /index.html   200
+
+# API Routes
+/api/*  /api/:splat  200
+
+# Auth Routes  
+/auth/*  /auth/:splat  200
+
+# Dashboard保護（認証なしはサインインページへ）
+/dashboard/*  /auth/signin  302  Role=anonymous
