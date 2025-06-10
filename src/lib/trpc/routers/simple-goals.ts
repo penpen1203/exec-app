@@ -85,7 +85,7 @@ export const simpleGoalsRouter = router({
       };
 
       // 実際にはデータベースに保存されません
-      console.log('Created goal (mock):', newGoal);
+      // Note: Mock implementation - data is not persisted
 
       return newGoal;
     }),

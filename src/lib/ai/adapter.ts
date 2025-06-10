@@ -79,7 +79,10 @@ export class AIAdapter {
       return response;
 
     } catch (error: unknown) {
-      console.error('AI generation error:', error);
+      // TODO: Replace with proper error tracking service (e.g., Sentry)
+      if (process.env.NODE_ENV === 'development') {
+        console.error('AI generation error:', error);
+      }
       
       return {
         error: error instanceof Error ? error.message : 'AI生成エラーが発生しました',
@@ -135,7 +138,10 @@ export class AIAdapter {
       return response;
 
     } catch (parseError) {
-      console.error('Goal chunk parse error:', parseError);
+      // TODO: Implement proper error logging without exposing user data
+      if (process.env.NODE_ENV === 'development') {
+        console.error('Goal chunk parse error:', parseError);
+      }
       
       // フォールバック: GPT-3.5-Turboで再試行
       if (aiRequest.model === AI_MODELS.GPT_4O) {

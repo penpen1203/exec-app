@@ -98,7 +98,10 @@ class KVCache {
 
       return entry;
     } catch (error) {
-      console.error('KV cache get error:', error);
+      // TODO: Implement proper error tracking
+      if (process.env.NODE_ENV === 'development') {
+        console.error('KV cache get error:', error);
+      }
       return null;
     }
   }
@@ -122,7 +125,10 @@ class KVCache {
         expirationTtl: CACHE_CONFIG.TTL_HOURS * 60 * 60,
       });
     } catch (error) {
-      console.error('KV cache set error:', error);
+      // TODO: Implement proper error tracking
+      if (process.env.NODE_ENV === 'development') {
+        console.error('KV cache set error:', error);
+      }
     }
   }
 
@@ -132,13 +138,18 @@ class KVCache {
     try {
       await this.kv.delete(key);
     } catch (error) {
-      console.error('KV cache delete error:', error);
+      // TODO: Implement proper error tracking
+      if (process.env.NODE_ENV === 'development') {
+        console.error('KV cache delete error:', error);
+      }
     }
   }
 
   async clear(): Promise<void> {
     // KVの一括削除は実装が複雑なため、個別削除を想定
-    console.warn('KV cache clear is not implemented');
+    if (process.env.NODE_ENV === 'development') {
+      console.warn('KV cache clear is not implemented');
+    }
   }
 }
 

@@ -45,7 +45,10 @@ export const loggerMiddleware = t.middleware(async ({ path, type, next }) => {
   const result = await next();
   const durationMs = Date.now() - start;
 
-  console.log(`${type} ${path} - ${durationMs}ms`);
+  // TODO: Replace with proper logging service in production
+  if (process.env.NODE_ENV === 'development') {
+    console.log(`${type} ${path} - ${durationMs}ms`);
+  }
 
   return result;
 });
