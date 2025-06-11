@@ -152,7 +152,46 @@ export class AIAdapter {
       
       // フォールバック: GPT-3.5-Turboで再試行
       if (aiRequest.model === AI_MODELS.GPT_4O) {
-        return this.chunkGoal({ ...request });
+        const fallbackRequest: AIRequest = {
+          ...aiRequest,
+          model: AI_MODELS.GPT_35_TURBO,
+        };
+        const fallbackResult = await this.generateText(fallbackRequest);
+        
+        if ('error' in fallbackResult) {
+          return fallbackResult;
+        }
+        
+        try {
+          const fallbackParsed = JSON.parse(fallbackResult.content) as {
+            chunks: Array<{
+              title?: string;
+              description?: string;
+              estimatedHours?: number;
+              dependencies?: number[];
+            }>;
+            totalEstimatedHours?: number;
+            reasoning?: string;
+          };
+          
+          return {
+            chunks: fallbackParsed.chunks.map((chunk, index: number) => ({
+              title: chunk.title || `タスク ${index + 1}`,
+              description: chunk.description || '',
+              estimatedHours: Math.max(chunk.estimatedHours || 1, 0.5),
+              order: index,
+              dependencies: chunk.dependencies || [],
+            })),
+            totalEstimatedHours: fallbackParsed.totalEstimatedHours || 0,
+            reasoning: fallbackParsed.reasoning || '',
+          };
+        } catch {
+          // フォールバックも失敗
+          return {
+            error: 'チャンク化結果の解析に失敗しました（フォールバック含む）',
+            code: 'INVALID_REQUEST',
+          };
+        }
       }
 
       return {

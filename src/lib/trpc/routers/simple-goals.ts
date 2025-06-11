@@ -51,10 +51,11 @@ export const simpleGoalsRouter = router({
         : mockGoals;
 
       const paginatedGoals = filteredGoals.slice(input.offset, input.offset + input.limit);
+      const nextOffset = input.offset + input.limit;
 
       return {
         goals: paginatedGoals,
-        hasMore: paginatedGoals.length === input.limit,
+        hasMore: nextOffset < filteredGoals.length,
       };
     }),
 
@@ -108,7 +109,7 @@ export const simpleGoalsRouter = router({
   chunk: loggedProtectedProcedure
     .input(
       z.object({
-        id: z.string().uuid(),
+        id: z.string(), // Accept mock IDs like "goal-1" or UUIDs
         deadline: z.string().optional(),
       })
     )
