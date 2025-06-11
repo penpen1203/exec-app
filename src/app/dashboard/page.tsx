@@ -32,17 +32,16 @@ export default async function DashboardPage() {
             </div>
           </Link>
           
-          <div className="rounded-lg bg-white p-6 shadow opacity-50">
+          <Link href="/dashboard/tasks" className="rounded-lg bg-white p-6 shadow hover:shadow-md transition-shadow cursor-pointer group">
             <div className="flex items-center justify-between">
               <div>
-                <h2 className="text-lg font-semibold text-gray-900">タスク</h2>
+                <h2 className="text-lg font-semibold text-gray-900 group-hover:text-green-600 transition-colors">タスク</h2>
                 <p className="mt-2 text-3xl font-bold text-green-600">0</p>
-                <p className="text-sm text-gray-500">今日のタスク</p>
+                <p className="text-sm text-gray-500">進行中のタスク</p>
               </div>
               <CheckSquare className="h-8 w-8 text-green-600 opacity-75" />
             </div>
-            <p className="text-xs text-gray-400 mt-2">Week3で実装予定</p>
-          </div>
+          </Link>
           
           <div className="rounded-lg bg-white p-6 shadow opacity-50">
             <div className="flex items-center justify-between">
@@ -70,14 +69,18 @@ export default async function DashboardPage() {
         </div>
         
         <div className="mt-8 bg-blue-50 border border-blue-200 rounded-lg p-6">
-          <h3 className="text-lg font-semibold text-blue-900 mb-2">Week2 実装完了機能</h3>
+          <h3 className="text-lg font-semibold text-blue-900 mb-2">実装完了機能</h3>
           <ul className="space-y-2 text-sm text-blue-800">
             <li className="flex items-center gap-2">
               <Target className="h-4 w-4" />
-              目標管理とAIチャンク化機能
+              <span className="font-medium">Week2:</span> 目標管理とAIチャンク化機能
             </li>
-            <li className="text-blue-600">
-              目標を作成して、AIが自動的に実行可能なタスクに分割します
+            <li className="flex items-center gap-2">
+              <CheckSquare className="h-4 w-4" />
+              <span className="font-medium">Week3:</span> タスク管理とドラッグ&ドロップボード
+            </li>
+            <li className="text-blue-600 ml-6">
+              目標を作成してAIで分割、タスクをカンバンボードで管理できます
             </li>
           </ul>
         </div>
