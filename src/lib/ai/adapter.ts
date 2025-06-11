@@ -117,8 +117,20 @@ export class AIAdapter {
     }
 
     try {
-      // JSONレスポンスをパース
-      const parsed = JSON.parse(result.content) as {
+      // JSONレスポンスをパース（コードフェンスや余分なテキストを除去）
+      const content = result.content.trim();
+      
+      // コードフェンスを除去
+      let jsonString = content.replace(/^```(?:json)?\s*\n?/g, '').replace(/\n?```$/g, '');
+      
+      // 最初の{から最後の}までを抽出
+      const firstBrace = jsonString.indexOf('{');
+      const lastBrace = jsonString.lastIndexOf('}');
+      if (firstBrace !== -1 && lastBrace !== -1 && lastBrace > firstBrace) {
+        jsonString = jsonString.substring(firstBrace, lastBrace + 1);
+      }
+      
+      const parsed = JSON.parse(jsonString) as {
         chunks: Array<{
           title?: string;
           description?: string;
@@ -163,7 +175,17 @@ export class AIAdapter {
         }
         
         try {
-          const fallbackParsed = JSON.parse(fallbackResult.content) as {
+          // フォールバックでも同様にJSONをパース
+          const content = fallbackResult.content.trim();
+          let jsonString = content.replace(/^```(?:json)?\s*\n?/g, '').replace(/\n?```$/g, '');
+          
+          const firstBrace = jsonString.indexOf('{');
+          const lastBrace = jsonString.lastIndexOf('}');
+          if (firstBrace !== -1 && lastBrace !== -1 && lastBrace > firstBrace) {
+            jsonString = jsonString.substring(firstBrace, lastBrace + 1);
+          }
+          
+          const fallbackParsed = JSON.parse(jsonString) as {
             chunks: Array<{
               title?: string;
               description?: string;
