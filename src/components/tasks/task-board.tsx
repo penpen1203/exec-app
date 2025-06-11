@@ -5,6 +5,7 @@ import { trpc } from '@/lib/trpc/client';
 import { TaskColumn } from './task-column';
 import { TaskCreateForm } from './task-create-form';
 import { Loader2 } from 'lucide-react';
+import { toast } from 'react-hot-toast';
 
 type TaskStatus = 'pending' | 'in_progress' | 'completed' | 'cancelled';
 
@@ -15,7 +16,7 @@ interface Task {
   status: TaskStatus;
   priority: 'low' | 'medium' | 'high' | 'urgent';
   estimatedMinutes?: number | null;
-  dueDate?: Date | null;
+  dueDate?: string | number | Date | null;
   tags?: string[];
 }
 
@@ -39,6 +40,9 @@ export function TaskBoard() {
     onSuccess: () => {
       refetch();
     },
+    onError: (err) => {
+      toast.error(err.message || 'ステータスの更新に失敗しました');
+    },
   });
 
   // ドラッグ開始
@@ -53,7 +57,7 @@ export function TaskBoard() {
 
   // ドロップ処理
   const handleDrop = (status: TaskStatus) => {
-    if (draggedTask && draggedTask.status !== status) {
+    if (!updateStatus.isPending && draggedTask && draggedTask.status !== status) {
       updateStatus.mutate({
         id: draggedTask.id,
         status,

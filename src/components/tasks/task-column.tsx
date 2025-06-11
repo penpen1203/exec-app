@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import { TaskCard } from './task-card';
 
 type TaskStatus = 'pending' | 'in_progress' | 'completed' | 'cancelled';
@@ -11,7 +12,7 @@ interface Task {
   status: TaskStatus;
   priority: 'low' | 'medium' | 'high' | 'urgent';
   estimatedMinutes?: number | null;
-  dueDate?: Date | null;
+  dueDate?: string | number | Date | null;
   tags?: string[];
 }
 
@@ -36,18 +37,20 @@ export function TaskColumn({
   onDrop,
   isDragging,
 }: TaskColumnProps) {
+  const [isOver, setIsOver] = useState(false);
+
   const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault();
-    e.currentTarget.classList.add('bg-opacity-50');
+    setIsOver(true);
   };
 
-  const handleDragLeave = (e: React.DragEvent) => {
-    e.currentTarget.classList.remove('bg-opacity-50');
+  const handleDragLeave = () => {
+    setIsOver(false);
   };
 
   const handleDrop = (e: React.DragEvent) => {
     e.preventDefault();
-    e.currentTarget.classList.remove('bg-opacity-50');
+    setIsOver(false);
     onDrop(status);
   };
 
@@ -55,7 +58,7 @@ export function TaskColumn({
     <div
       className={`${color} rounded-lg p-4 min-h-[400px] transition-colors ${
         isDragging ? 'border-2 border-dashed border-gray-300' : ''
-      }`}
+      } ${isOver ? 'bg-opacity-50' : ''}`}
       onDragOver={handleDragOver}
       onDragLeave={handleDragLeave}
       onDrop={handleDrop}

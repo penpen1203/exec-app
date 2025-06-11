@@ -13,7 +13,7 @@ interface Task {
   status: TaskStatus;
   priority: 'low' | 'medium' | 'high' | 'urgent';
   estimatedMinutes?: number | null;
-  dueDate?: Date | null;
+  dueDate?: string | number | Date | null;
   tags?: string[];
 }
 

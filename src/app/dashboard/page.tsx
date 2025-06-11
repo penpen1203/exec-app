@@ -21,7 +21,10 @@ export default async function DashboardPage() {
         </p>
         
         <div className="mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-          <Link href="/dashboard/goals" className="rounded-lg bg-white p-6 shadow hover:shadow-md transition-shadow cursor-pointer group">
+          <Link 
+            href="/dashboard/goals" 
+            aria-label="目標管理ページへ移動"
+            className="rounded-lg bg-white p-6 shadow hover:shadow-md transition-shadow focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2 group">
             <div className="flex items-center justify-between">
               <div>
                 <h2 className="text-lg font-semibold text-gray-900 group-hover:text-blue-600 transition-colors">目標</h2>
@@ -32,7 +35,10 @@ export default async function DashboardPage() {
             </div>
           </Link>
           
-          <Link href="/dashboard/tasks" className="rounded-lg bg-white p-6 shadow hover:shadow-md transition-shadow cursor-pointer group">
+          <Link 
+            href="/dashboard/tasks" 
+            aria-label="タスク管理ページへ移動"
+            className="rounded-lg bg-white p-6 shadow hover:shadow-md transition-shadow focus-visible:ring-2 focus-visible:ring-green-600 focus-visible:ring-offset-2 group">
             <div className="flex items-center justify-between">
               <div>
                 <h2 className="text-lg font-semibold text-gray-900 group-hover:text-green-600 transition-colors">タスク</h2>

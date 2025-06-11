@@ -1,6 +1,14 @@
+import { auth } from '@/lib/auth';
+import { redirect } from 'next/navigation';
 import { TaskBoard } from '@/components/tasks/task-board';
 
-export default function TasksPage() {
+export default async function TasksPage() {
+  const session = await auth();
+  
+  if (!session?.user) {
+    redirect('/auth/signin');
+  }
+
   return (
     <div className="space-y-8">
       <div>
